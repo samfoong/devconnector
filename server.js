@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const passport = require('passport'); //main authentication module
 
 const users = require('./routes/api/users');
 const profile = require('./routes/api/profile');
@@ -21,7 +22,15 @@ mongoose
     .then(() => console.log('MongoDB Conencted')) //if connect successfully
     .catch(err => console.log(err)); //if there is an error- how javascript promises works
 
-app.get('/', (req, res) =>res.send('Hello!'));
+// Passport Middleware
+app.use(passport.initialize());
+
+
+// Passport Config 
+require('./config/passport')(passport);
+
+
+//app.get('/', (req, res) =>res.send('Hello!'));  // initial Hello World
 
 // Use Routes
 app.use('/api/users', users)
